@@ -21,6 +21,7 @@ export const tagTypes = {
   blog_categories: "blog-categories",
   blog_details: "blog-details",
   business_we_cover: "business-we-cover",
+  partners: "partners",
   projects: "projects",
   project_categories: "project-categories",
   faqs: "faqs",
@@ -42,6 +43,7 @@ export const tagTypesList = [
   tagTypes.heroes,
   tagTypes.our_work_process,
   tagTypes.categories,
+  tagTypes.partners,
   tagTypes.services,
   tagTypes.service_faqs,
   tagTypes.service_reviews,
@@ -56,6 +58,7 @@ export const tagTypesList = [
   tagTypes.assigen_pricing_features,
   tagTypes.business_we_cover,
   tagTypes.blogs,
+
   tagTypes.blog_categories,
   tagTypes.blog_details,
   tagTypes.projects,
