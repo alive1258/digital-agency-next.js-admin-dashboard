@@ -4,192 +4,216 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import Image from "next/image";
+
 import {
   useGetSingleHomeHeroQuery,
   useUpdateHomeHeroMutation,
 } from "@/redux/api/homeHeroApi";
+
 import SectionTitle from "@/components/common/SectionTitle/SectionTitle";
 import Input from "@/components/common/Forms/Input";
+import Textarea from "@/components/common/Textarea/Textarea";
 import FileInput from "@/components/common/FileInput/FileInput";
 import FetchLoading from "@/components/common/Loading/FetchLoading";
 import TableSkeleton from "@/components/common/Loading/TableSkeleton";
-import Textarea from "@/components/common/Textarea/Textarea";
 
 const EditHomeHero = ({ id }) => {
   const {
     register,
-    formState: { errors },
     handleSubmit,
     setValue,
     watch,
+    formState: { errors },
   } = useForm();
 
+  const router = useRouter();
+  const watchImage = watch("image");
+
   const {
-    data: homHeroData,
+    data,
     isLoading: fetchLoading,
     error,
     refetch,
   } = useGetSingleHomeHeroQuery(id, { skip: !id });
+
   const [updateHomeHero, { isLoading }] = useUpdateHomeHeroMutation();
 
-  const router = useRouter();
-  const watchPhoto = watch("photo");
+  const hero = data?.data;
 
-  const currentPhoto =
-    homHeroData?.data?.photo &&
-    process.env.NEXT_PUBLIC_IMAGE_PATH + homHeroData?.data?.photo;
+  const currentImage = hero?.image;
 
-  const previewPhoto =
-    watchPhoto instanceof File
-      ? URL.createObjectURL(watchPhoto)
-      : watchPhoto?.[0]
-      ? URL.createObjectURL(watchPhoto[0])
-      : null;
+  const previewImage =
+    watchImage instanceof File
+      ? URL.createObjectURL(watchImage)
+      : watchImage?.[0]
+        ? URL.createObjectURL(watchImage[0])
+        : null;
 
-  const cacheBustedImage = currentPhoto + "?t=" + new Date().getTime();
+  const cacheBustedImage = currentImage && `${currentImage}?t=${Date.now()}`;
 
+  /* -------------------- Set default values -------------------- */
   useEffect(() => {
-    if (homHeroData) {
-      setValue("name", homHeroData.data.name || "");
-      setValue("class_name", homHeroData.data.class_name || "");
-      setValue("course_name", homHeroData.data.course_name || "");
-      setValue("cv_link", homHeroData.data.cv_link || "");
-      setValue("description", homHeroData.data.description || "");
-    }
-  }, [homHeroData, setValue]);
+    if (!hero) return;
 
-  const onSubmit = async (data) => {
+    setValue("title", hero.title || "");
+    setValue("company", hero.company || "");
+    setValue("description", hero.description || "");
+    setValue("score", hero.score || "");
+    setValue("rating", hero.rating || "");
+    setValue("videoUrl", hero.videoUrl || "");
+    setValue("campaigns", hero.campaigns || "");
+    setValue("revenue", hero.revenue || "");
+  }, [hero, setValue]);
+
+  /* -------------------- Submit -------------------- */
+  const onSubmit = async (formDataValue) => {
     try {
       const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("class_name", data.class_name);
-      formData.append("course_name", data.course_name);
-      formData.append("cv_link", data.cv_link);
-      formData.append("description", data.description);
-      if (data.photo) {
-        formData.append("photo", data.photo);
+
+      formData.append("title", formDataValue.title);
+      formData.append("company", formDataValue.company);
+      formData.append("description", formDataValue.description);
+      formData.append("score", formDataValue.score);
+      formData.append("rating", formDataValue.rating);
+      formData.append("videoUrl", formDataValue.videoUrl);
+      formData.append("campaigns", formDataValue.campaigns);
+      formData.append("revenue", formDataValue.revenue);
+
+      if (formDataValue.image) {
+        formData.append("image", formDataValue.image);
       }
 
-      // if (data.photo && data.photo.length > 0) {
-      //   formData.append("photo", data.photo[0]);
-      // }
-      const res = await updateHomeHero({ id, data: formData }).unwrap(); // ✅ FIXED
+      const res = await updateHomeHero({ id, data: formData }).unwrap();
 
       if (res?.success) {
+        toast.success("Home Hero updated successfully!");
         router.back();
-        toast.success("Home Hero updated successfully!", {
-          position: toast.TOP_RIGHT,
-        });
         refetch();
       } else {
-        toast.error(res.message, { position: toast.TOP_RIGHT });
+        toast.error(res?.message || "Update failed");
       }
-    } catch (error) {
-      toast.error(error?.message || "An error occurred", {
-        position: toast.TOP_RIGHT,
-      });
+    } catch (err) {
+      toast.error(err?.message || "Something went wrong");
     }
   };
-  // Sometimes browser caches the image and doesn’t refetch it even if it's updated. To fix this, add a query param:
-  // useEffect(() => {
-  //   if (id) refetch();
-  // }, [id]);
 
   if (fetchLoading) return <TableSkeleton />;
-  if (error) return <div>Error: {error?.message}</div>;
+  if (error) return <div className="text-red-500">Failed to load data</div>;
+
   return (
     <section className="md:px-6 px-4 mt-6 rounded-lg">
-      <div>
-        <SectionTitle
-          big_title={"Edit Home Hero"}
-          title_one={"Home"}
-          link_one={"/"}
-          title_two={"All Home Hero"}
-          link_two={"/home-page/home-hero/all-home-heros"}
-          link_three={`/home-page/home-hero/edit-home-hero/${id}`}
-          title_three={"Edit Home Hero"}
-        />
-      </div>
+      <SectionTitle
+        big_title="Edit Home Hero"
+        title_one="Home"
+        link_one="/"
+        title_two="All Home Hero"
+        link_two="/home-page/home-hero/all-home-heros"
+        title_three="Edit Home Hero"
+        link_three={`/home-page/home-hero/edit-home-hero/${id}`}
+      />
 
       <div className="add_form_section mt-4">
-        <h1 className="add_section_title">Edit Home Hero Step by Step</h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="my-5">
-          <div className="cart-group grid grid-cols-1 lg:grid-cols-2 items-end gap-y-2 gap-x-5">
-            {/* Headline Input */}
+        <h1 className="add_section_title">Edit Home Hero</h1>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <Input
-              placeholder="Enter Your Name"
-              text="name"
-              label="Your Name"
+              label="Title"
+              text="title"
+              placeholder="Hero Title"
               register={register}
               errors={errors}
             />
+
             <Input
-              placeholder="Enter Class Name"
-              text="class_name"
-              label="Class Name "
+              label="Company"
+              text="company"
+              placeholder="Company Name"
               register={register}
               errors={errors}
             />
+
             <Input
-              placeholder="Enter Course Name"
-              text="course_name"
-              label="Course Name"
+              label="Score"
+              text="score"
+              placeholder="Score"
               register={register}
               errors={errors}
             />
+
             <Input
-              placeholder="Enter Cv Link"
-              text="cv_link"
-              label="Cv Link"
+              label="Rating"
+              text="rating"
+              placeholder="Rating"
+              register={register}
+              errors={errors}
+            />
+
+            <Input
+              label="Campaigns"
+              text="campaigns"
+              placeholder="Total Campaigns"
+              register={register}
+              errors={errors}
+            />
+
+            <Input
+              label="Revenue"
+              text="revenue"
+              placeholder="Revenue"
+              register={register}
+              errors={errors}
+            />
+
+            <Input
+              label="Video URL"
+              text="videoUrl"
+              placeholder="YouTube Video URL"
               register={register}
               required={false}
               errors={errors}
             />
 
-            <div className="col-span-2">
+            <div className="lg:col-span-2">
               <Textarea
-                placeholder="Enter Description"
-                text="description"
                 label="Description"
-                required={false}
+                text="description"
+                placeholder="Hero Description"
                 register={register}
                 errors={errors}
               />
+            </div>
 
-              {/* Show Current Image if no new photo is selected */}
+            {(previewImage || cacheBustedImage) && (
+              <div className="lg:col-span-2">
+                <label className="block mb-2 font-medium">
+                  {previewImage ? "New Image Preview" : "Current Image"}
+                </label>
+                <Image
+                  src={previewImage || cacheBustedImage}
+                  width={300}
+                  height={180}
+                  className="rounded shadow object-cover"
+                  alt="Hero Image"
+                />
+              </div>
+            )}
 
-              {(previewPhoto || cacheBustedImage) && (
-                <div className="col-span-2 mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {previewPhoto ? "New Selected Photo" : "Current Photo"}
-                  </label>
-                  <Image
-                    src={previewPhoto || cacheBustedImage}
-                    width={250}
-                    height={150}
-                    alt="Preview"
-                    className="rounded object-cover shadow"
-                  />
-                </div>
-              )}
-
+            <div className="lg:col-span-2">
               <FileInput
-                placeholder="Choose File"
-                text="photo"
-                label="Change photo"
+                label="Change Image"
+                text="image"
                 register={register}
-                required={false}
                 setValue={setValue}
+                required={false}
                 errors={errors}
               />
             </div>
           </div>
 
-          <div className="pt-4">
-            <button disabled={isLoading} className="btn" type="submit">
-              {isLoading ? <FetchLoading /> : "Submit"}
-            </button>
-          </div>
+          <button disabled={isLoading} className="btn">
+            {isLoading ? <FetchLoading /> : "Update Hero"}
+          </button>
         </form>
       </div>
     </section>
