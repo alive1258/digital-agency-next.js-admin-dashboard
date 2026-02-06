@@ -32,7 +32,7 @@ const SidebarCard = ({ item, setActiveSidebar, activeSidebar }) => {
           {/* Parent item with collapsible sub-items */}
           <div
             onClick={handleClick}
-            className={` flex items-center  justify-between hover:bg-[#630feb] gap-2 ${
+            className={` flex items-center  justify-between bg-[#14151A] hover:bg-gradient-to-l hover:from-[#191147] hover:to-[#6100FF] transition-all hover:text-white duration-200 gap-2 ${
               isActive || activeSidebar === item?.id
                 ? "active-sidebar "
                 : "active-sidebar"

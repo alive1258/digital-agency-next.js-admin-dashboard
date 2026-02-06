@@ -12,14 +12,13 @@ const persistConfig = {
 
 const persistedAdminSideBarTree = persistReducer(
   persistConfig,
-  adminSiteBerSlice
+  adminSiteBerSlice,
 );
-const persistedAuth = persistReducer(persistConfig, authSlice);
 const persistedOtp = persistReducer(persistConfig, otpSlice);
 
 export const reducer = {
   [baseApi.reducerPath]: baseApi.reducer,
-  auth: persistedAuth,
+  auth: authSlice,
   otpTree: persistedOtp,
   adminTree: persistedAdminSideBarTree,
 };
