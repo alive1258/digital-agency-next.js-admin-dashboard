@@ -1,41 +1,41 @@
 import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
-const HOME_HERO_URL = "/home-hero-section";
+const HOME_HERO_URL = "/heroes";
 
 export const homeHeroApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // Mutation for creating a new  home_hero_section
+    // Mutation for creating a new  heroes
     createHomeHeros: build.mutation({
       query: (data) => ({
-        url: `${HOME_HERO_URL}`,
+        url: `${HOME_HERO_URL}/create`,
         method: "POST",
         data,
         contentType: "multipart/form-data",
       }),
-      invalidatesTags: [tagTypes.home_hero_section],
+      invalidatesTags: [tagTypes.heroes],
     }),
 
-    // Query for fetching all home_hero_section
+    // Query for fetching all heroes
     getAllHomeHeros: build.query({
-      query: (arg) => ({
+      query: (params) => ({
         url: `${HOME_HERO_URL}`,
         method: "GET",
-        params: arg,
+        params,
       }),
-      providesTags: [tagTypes.home_hero_section],
+      providesTags: [tagTypes.heroes],
     }),
 
-    // Query for fetching a single home_hero_section by its ID
+    // Query for fetching a single heroes by its ID
     getSingleHomeHero: build.query({
       query: (id) => ({
         url: `${HOME_HERO_URL}/${id}`,
         method: "GET",
       }),
-      providesTags: [tagTypes.home_hero_section],
+      providesTags: [tagTypes.heroes],
     }),
 
-    // Mutation for updating a single home_hero_section by its ID
+    // Mutation for updating a single heroes by its ID
     updateHomeHero: build.mutation({
       query: ({ id, data }) => ({
         url: `${HOME_HERO_URL}/${id}`,
@@ -43,16 +43,16 @@ export const homeHeroApi = baseApi.injectEndpoints({
         data,
         contentType: "multipart/form-data",
       }),
-      invalidatesTags: [tagTypes.home_hero_section],
+      invalidatesTags: [tagTypes.heroes],
     }),
 
-    // Mutation for deleting a home_hero_section by its ID
+    // Mutation for deleting a heroes by its ID
     deleteHomeHero: build.mutation({
       query: (id) => ({
         url: `${HOME_HERO_URL}/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [tagTypes.home_hero_section],
+      invalidatesTags: [tagTypes.heroes],
     }),
   }),
 });

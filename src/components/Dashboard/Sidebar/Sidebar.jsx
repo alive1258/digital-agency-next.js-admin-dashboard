@@ -6,7 +6,7 @@ import SidebarCard from "./SidebarCard";
 import { useDispatch, useSelector } from "react-redux";
 import { sidebarToggle } from "@/redux/features/adminSiteBerSlice";
 import { SidebarItemsData } from "@/utils/dashboardSidebarData";
-import WorkingModule from "./WorkingModule";
+// import WorkingModule from "./WorkingModule";
 // import { addModule } from "@/redux/features/moduleAccessSlice";
 
 const Sidebar = ({ sidebarRef, sidebarMobileStatus }) => {
@@ -38,7 +38,7 @@ const Sidebar = ({ sidebarRef, sidebarMobileStatus }) => {
               <div className="flex items-center justify-between">
                 <Link href="/">
                   {/* <Link href="/" onClick={() => dispatch(sidebarToggle())}> */}
-                  <h2 className="logo">Abu Sayem Admin</h2>
+                  <h2 className="logo">Admin Dashboard</h2>
                 </Link>
                 <MdMenuOpen
                   onClick={() => dispatch(sidebarToggle())}
@@ -51,7 +51,7 @@ const Sidebar = ({ sidebarRef, sidebarMobileStatus }) => {
           )}
           {/* Sidebar Content */}
           <div className="px-2 pt-2 h-[90vh] sidebarScroll overflow-y-auto">
-            <WorkingModule />
+            {/* <WorkingModule /> */}
             {SidebarItemsData?.map((item, index) => (
               <SidebarCard
                 key={index}

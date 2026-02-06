@@ -32,7 +32,7 @@ const SidebarCard = ({ item, setActiveSidebar, activeSidebar }) => {
           {/* Parent item with collapsible sub-items */}
           <div
             onClick={handleClick}
-            className={` flex items-center  justify-between hover:bg-[#111217] gap-2 ${
+            className={` flex items-center  justify-between hover:bg-[#630feb] gap-2 ${
               isActive || activeSidebar === item?.id
                 ? "active-sidebar "
                 : "active-sidebar"
@@ -68,7 +68,7 @@ const SidebarCard = ({ item, setActiveSidebar, activeSidebar }) => {
                   <div className="pl-4 mb-2  border-gray-600" key={index}>
                     <Link
                       onClick={() => dispatch(sidebarMobileToggle())}
-                      className={`px-3 py-2 flex items-center gap-2 rounded text-sm capitalize hover:bg-[#111217] hover:text-white duration-200 ${
+                      className={`px-3 py-2 flex items-center gap-2 rounded text-sm capitalize  bg-[#14151A] hover:bg-gradient-to-l hover:from-[#191147] hover:to-[#6100FF] transition-all hover:text-white duration-200 ${
                         pathname == subItem.path
                           ? "active-sidebar active-sidebar-active"
                           : "active-sidebar"
@@ -87,7 +87,7 @@ const SidebarCard = ({ item, setActiveSidebar, activeSidebar }) => {
         <Link
           href={item.path}
           onClick={() => {
-            dispatch(sidebarMobileToggle()), setActiveSidebar(item?.id);
+            (dispatch(sidebarMobileToggle()), setActiveSidebar(item?.id));
           }}
         >
           <div

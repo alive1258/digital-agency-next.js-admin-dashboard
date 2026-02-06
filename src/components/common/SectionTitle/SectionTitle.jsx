@@ -36,13 +36,13 @@ const SectionTitle = ({
           {breadcrumbs.map((breadcrumb, index) => (
             <React.Fragment key={index}>
               {index === breadcrumbs.length - 1 ? (
-                <span className="py-1 text-[13px] font-medium leading-[18px] text-blue-500 cursor-default">
+                <span className="py-1 text-[13px] font-medium leading-[18px] text-[#6315e0] cursor-default">
                   {breadcrumb.title}
                 </span>
               ) : (
                 <Link
                   href={breadcrumb.link}
-                  className="py-1 text-[13px] font-medium leading-[18px] text-info-muted hover:text-blue-500 hover:underline"
+                  className="py-1 text-[13px] font-medium leading-[18px] text-info-muted hover:text-[#6315e0] hover:underline"
                 >
                   {breadcrumb.title}
                 </Link>

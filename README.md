@@ -1,4 +1,4 @@
-## 🛒 Digital Agency Admin Dashboard
+## Digital Agency Admin Dashboard
 
 ## Getting Started Setup and Usage
 
@@ -51,7 +51,7 @@ npm run dev
 
 - React 19 – For building the user interface
 
-- Next.js 15 – React framework for SSR and routing
+- Next.js 16 – React framework for SSR and routing
 
 - Tailwind CSS – Utility-first CSS framework for rapid UI development
 
