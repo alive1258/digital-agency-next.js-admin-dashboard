@@ -37,6 +37,7 @@ export const tagTypes = {
   portfolios: "portfolios",
   portfolio_categories: "portfolio-categories",
   portfolio_details: "portfolio-details",
+  pricing_category: "pricing-category",
 };
 
 export const tagTypesList = [
@@ -45,6 +46,7 @@ export const tagTypesList = [
   tagTypes.home_about_section,
   tagTypes.heroes,
   tagTypes.our_work_process,
+  tagTypes.pricing_category,
   tagTypes.categories,
   tagTypes.partners,
   tagTypes.portfolios,
