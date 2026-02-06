@@ -34,6 +34,9 @@ export const tagTypes = {
   extra_curriculum: "extra-curriculum",
   article_categories: "article-categories",
   articles: "articles",
+  portfolios: "portfolios",
+  portfolio_categories: "portfolio-categories",
+  portfolio_details: "portfolio-details",
 };
 
 export const tagTypesList = [
@@ -44,6 +47,8 @@ export const tagTypesList = [
   tagTypes.our_work_process,
   tagTypes.categories,
   tagTypes.partners,
+  tagTypes.portfolios,
+  tagTypes.portfolio_details,
   tagTypes.services,
   tagTypes.service_faqs,
   tagTypes.service_reviews,
@@ -58,7 +63,7 @@ export const tagTypesList = [
   tagTypes.assigen_pricing_features,
   tagTypes.business_we_cover,
   tagTypes.blogs,
-
+  tagTypes.portfolio_categories,
   tagTypes.blog_categories,
   tagTypes.blog_details,
   tagTypes.projects,
