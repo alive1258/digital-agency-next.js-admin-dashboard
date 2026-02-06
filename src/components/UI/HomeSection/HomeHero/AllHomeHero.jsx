@@ -22,22 +22,20 @@ const AllHomeHero = () => {
   const [searchValue, setSearchValue] = useState({});
   const debouncedQuery = useDebounce(searchQuery);
 
-  const query = {
-    search: debouncedQuery,
-    ...searchValue,
-  };
+  const query = { ...searchValue };
+  if (debouncedQuery) query.search = debouncedQuery;
 
   const { data, error, isLoading, refetch } = useGetAllHomeHerosQuery(query);
   const [deleteHomeHero] = useDeleteHomeHeroMutation();
 
   // Filters companies based on the search query
-  const filteredData = data?.data?.data;
+  const filteredData = data?.data;
 
   const handleDeleteHomeHero = async (homeHero) => {
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
-        text: `Are you sure you want to delete the homeHero "${homeHero?.name}"?`,
+        text: `Are you sure you want to delete the homeHero "${homeHero?.title}"?`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -49,7 +47,7 @@ const AllHomeHero = () => {
         if (response?.success) {
           Swal.fire({
             title: "Deleted!",
-            text: `The homeHero "${homeHero?.name}" has been successfully deleted.`,
+            text: `The homeHero "${homeHero?.title}" has been successfully deleted.`,
             icon: "success",
           });
         } else {
@@ -121,57 +119,57 @@ const AllHomeHero = () => {
           <div className="table_section">
             <table className="w-full">
               <thead>
-                <tr className="table_row ">
+                <tr className="table_row">
                   <th className="table_th w-4">#SL</th>
-                  <th className="table_th">Photo</th>
-                  <th className="table_th">Name</th>
-                  <th className="table_th">Class Name</th>
-                  <th className="table_th">Course Name</th>
-                  <th className="table_th">description</th>
+                  <th className="table_th">Image</th>
+                  <th className="table_th">Title</th>
+                  <th className="table_th">Company</th>
+                  <th className="table_th">Score / Rating</th>
+                  <th className="table_th">Description</th>
                   <th className="table_th text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredData?.length > 0 ? (
-                  filteredData?.map((item, index) => (
-                    <tr key={index} className="tbody_tr">
+                  filteredData.map((item, index) => (
+                    <tr key={item.id ?? index} className="tbody_tr">
                       <td className="table_th">{index + 1}</td>
+
+                      {/* Photo */}
                       <td className="table_th flex justify-center">
-                        {item?.photo && (
+                        {item?.image && (
                           <Image
-                            className=""
                             width={60}
                             height={60}
-                            src={
-                              process.env.NEXT_PUBLIC_IMAGE_PATH +
-                              item?.photo +
-                              `?v=${new Date().getTime()}`
-                            }
-                            // To force the browser to re-fetch the image after an update, you can append a random query string (like a timestamp) to the image URL. That way, the URL becomes unique each time, and the browser treats it as a new image.
-                            // src={
-                            //   process.env.NEXT_PUBLIC_IMAGE_PATH +
-                            //   item?.photo +
-                            //   `?v=${new Date().getTime()}`
-                            // }
-                            alt="photo"
+                            src={item.image}
+                            alt="hero"
                           />
                         )}
                       </td>
-                      <td className="table_th ">
-                        <p>{truncateCharacters(item?.name, 30)}</p>
-                      </td>
+
+                      {/* Name */}
                       <td className="table_th">
-                        <p>{truncateCharacters(item?.class_name, 30)}</p>
-                      </td>
-                      <td className="table_th">
-                        <p>{truncateCharacters(item?.course_name, 30)}</p>
-                      </td>
-                      <td className="table_th">
-                        <p>{truncateCharacters(item?.description, 30)}</p>
+                        {truncateCharacters(item?.title, 30)}
                       </td>
 
-                      <td className="my-2 px-4 text-center ">
-                        <div className="flex items-center justify-center w-full gap-2">
+                      {/* Class Name → Company */}
+                      <td className="table_th">
+                        {truncateCharacters(item?.company, 30)}
+                      </td>
+
+                      {/* Course Name → Score / Rating */}
+                      <td className="table_th">
+                        Score: {item?.score} | ⭐ {item?.rating}
+                      </td>
+
+                      {/* Description */}
+                      <td className="table_th">
+                        {truncateCharacters(item?.description, 30)}
+                      </td>
+
+                      {/* Action */}
+                      <td className="px-4 text-center">
+                        <div className="flex justify-center gap-2">
                           <EditIcon
                             edit_link={`/home-page/home-hero/edit-home-hero/${item?.id}`}
                           />
@@ -184,11 +182,10 @@ const AllHomeHero = () => {
                     </tr>
                   ))
                 ) : (
-                  // Display message when no companies match the search criteria
                   <tr>
                     <td
-                      colSpan="10"
-                      className="bg-black-base text-center py-6 text-red-600 text-2xl font-bold"
+                      colSpan={7}
+                      className="text-center py-6 text-red-600 text-xl"
                     >
                       <NotFound />
                     </td>
@@ -199,15 +196,15 @@ const AllHomeHero = () => {
           </div>
         </div>
         <div>
-          {data?.data?.meta?.totalPages > 0 && (
+          {data?.meta?.totalPages > 1 && (
             <AccountPagination
               refetch={refetch}
-              total={data?.data?.meta?.total}
+              total={data?.meta?.total}
               setSearchValue={setSearchValue}
               searchValue={searchValue}
-              totalPage={data?.data?.meta?.totalPages}
-              limit={data?.data?.meta?.limit}
-              page={data?.data?.meta?.page}
+              totalPage={data?.meta?.totalPages}
+              limit={data?.meta?.limit}
+              page={data?.meta?.page}
             />
           )}
         </div>

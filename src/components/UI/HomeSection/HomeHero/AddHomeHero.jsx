@@ -13,116 +13,152 @@ import FileInput from "@/components/common/FileInput/FileInput";
 const AddHomeHero = () => {
   const {
     register,
-    formState: { errors },
     handleSubmit,
     reset,
     setValue,
+    formState: { errors },
   } = useForm();
-  const router = useRouter();
 
+  const router = useRouter();
   const [createHomeHero, { isLoading }] = useCreateHomeHerosMutation();
 
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("class_name", data.class_name);
-      formData.append("course_name", data.course_name);
-      formData.append("cv_link", data.cv_link);
+
+      // Required fields
+      formData.append("title", data.title);
       formData.append("description", data.description);
-      if (data.photo) {
-        formData.append("photo", data.photo);
-      }
+      formData.append("company", data.company);
+      formData.append("score", data.score);
+      formData.append("rating", data.rating);
+
+      // Optional fields
+      if (data.videoUrl) formData.append("videoUrl", data.videoUrl);
+      if (data.campaigns) formData.append("campaigns", data.campaigns);
+      if (data.revenue) formData.append("revenue", data.revenue);
+      if (data.image) formData.append("image", data.image);
 
       const res = await createHomeHero(formData).unwrap();
 
       if (res?.success) {
+        toast.success("Home Hero created successfully!");
         reset();
         router.back();
-        toast.success("Home Hero  added successfully!", {
-          position: toast.TOP_RIGHT,
-        });
       } else {
-        toast.error(res.message, { position: toast.TOP_RIGHT });
+        toast.error(res?.message || "Failed to create Home Hero");
       }
     } catch (error) {
-      toast.error(error?.message || "An error occurred", {
-        position: toast.TOP_RIGHT,
-      });
+      toast.error(error?.message || "Something went wrong");
     }
   };
 
   return (
     <section className="md:px-6 px-4 mt-6 pb-4 rounded-lg">
       <SectionTitle
-        big_title={"Add Home Hero "}
-        link_one={"/"}
-        title_one={"Home"}
-        link_two={"/home-page/home-hero/all-home-heros"}
-        title_two={"All Home Hero"}
-        title_three={"Add Home Hero"}
-        link_three={"/home-page/home-hero/add-home-hero"}
+        big_title="Add Home Hero"
+        link_one="/"
+        title_one="Home"
+        link_two="/home-page/home-hero/all-home-heros"
+        title_two="All Home Hero"
+        title_three="Add Home Hero"
+        link_three="/home-page/home-hero/add-home-hero"
       />
 
-      <div className="add_form_section mt-2">
-        <h1 className="add_section_title">Create Home Hero Step by Step</h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-5">
-          <div className="cart-group grid grid-cols-1 lg:grid-cols-2 items-end gap-y-2 gap-x-5">
+      <div className="add_form_section mt-4">
+        <h1 className="add_section_title">Create Home Hero</h1>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <Input
-              placeholder="Enter Your Name"
-              text="name"
-              label="Your Name"
+              label="Title"
+              placeholder="Enter hero title"
+              text="title"
               register={register}
               errors={errors}
             />
+
             <Input
-              placeholder="Enter Class Name"
-              text="class_name"
-              label="Class Name "
+              label="Company"
+              placeholder="Enter company name"
+              text="company"
               register={register}
               errors={errors}
             />
+
             <Input
-              placeholder="Enter Course Name"
-              text="course_name"
-              label="Course Name"
+              label="Score"
+              placeholder="Enter score (e.g. 98)"
+              text="score"
+              type="number"
               register={register}
               errors={errors}
             />
+
             <Input
-              placeholder="Enter Cv Link"
-              text="cv_link"
-              label="Cv Link"
+              label="Rating"
+              placeholder="Enter rating (0–5)"
+              text="rating"
+              type="number"
+              step="0.1"
               register={register}
+              errors={errors}
+            />
+
+            <Input
+              label="Video URL"
+              placeholder="https://youtube.com/..."
+              text="videoUrl"
               required={false}
+              register={register}
               errors={errors}
             />
-            <div className="md:col-span-2">
+
+            <Input
+              label="Campaigns"
+              placeholder="Total campaigns"
+              text="campaigns"
+              type="number"
+              required={false}
+              register={register}
+              errors={errors}
+            />
+
+            <Input
+              label="Revenue"
+              placeholder="Revenue amount"
+              text="revenue"
+              type="number"
+              required={false}
+              register={register}
+              errors={errors}
+            />
+
+            <div className="lg:col-span-2">
               <Textarea
-                placeholder="Enter Description"
-                text="description"
                 label="Description"
-                required={false}
+                placeholder="Enter hero description"
+                text="description"
                 register={register}
                 errors={errors}
               />
+            </div>
+
+            <div className="lg:col-span-2">
               <FileInput
-                placeholder="Choose File"
-                text="photo"
-                label="Upload Photo"
-                register={register}
+                label="Hero Image"
+                text="image"
                 required={false}
+                register={register}
                 setValue={setValue}
                 errors={errors}
               />
             </div>
           </div>
 
-          <div>
-            <button disabled={isLoading} className="btn" type="submit">
-              {isLoading ? <FetchLoading /> : "Submit"}
-            </button>
-          </div>
+          <button disabled={isLoading} className="btn mt-4" type="submit">
+            {isLoading ? <FetchLoading /> : "Submit"}
+          </button>
         </form>
       </div>
     </section>
