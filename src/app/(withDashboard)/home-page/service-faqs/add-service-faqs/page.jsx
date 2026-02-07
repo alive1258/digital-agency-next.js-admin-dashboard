@@ -1,4 +1,4 @@
-import AddServiceFaqs from "@/components/UI/HomeSection/Service/ServiceFaqs/AddServiceFaqs";
+import AddServiceFaqs from "@/components/UI/HomeSection/ServiceFaqs/AddServiceFaqs";
 import React from "react";
 
 const page = () => {

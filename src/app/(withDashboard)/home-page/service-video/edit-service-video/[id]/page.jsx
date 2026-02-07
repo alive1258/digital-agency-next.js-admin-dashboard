@@ -1,10 +1,10 @@
-import EditServiceFaqs from "@/components/UI/HomeSection/ServiceFaqs/EditServiceFaqs";
+import EditServiceVideo from "@/components/UI/HomeSection/ServiceVideo/EditServiceVideo";
 
 const page = async ({ params }) => {
   const { id } = await params;
   return (
     <>
-      <EditServiceFaqs id={id} />
+      <EditServiceVideo id={id} />
     </>
   );
 };
