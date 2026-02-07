@@ -1,64 +1,64 @@
 import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
-const PRICING_FEATURES_URL = "/pricing-features";
+const PRICINGS_URL = "/pricings";
 
-export const pricingFeaturesApi = baseApi.injectEndpoints({
+export const pricingsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // Mutation for creating a new pricing feature
-    createPricingFeature: build.mutation({
+    // Mutation for creating a new pricing
+    createPricing: build.mutation({
       query: (data) => ({
-        url: `${PRICING_FEATURES_URL}/create`,
+        url: `${PRICINGS_URL}/create`,
         method: "POST",
         data,
       }),
-      invalidatesTags: [tagTypes.pricing_features],
+      invalidatesTags: [tagTypes.pricings],
     }),
 
-    // Query for fetching all pricing features
-    getAllPricingFeatures: build.query({
+    // Query for fetching all pricings
+    getAllPricings: build.query({
       query: (params) => ({
-        url: `${PRICING_FEATURES_URL}`,
+        url: `${PRICINGS_URL}`,
         method: "GET",
         params,
       }),
-      providesTags: [tagTypes.pricing_features],
+      providesTags: [tagTypes.pricings],
     }),
 
-    // Query for fetching a single pricing feature by ID
-    getSinglePricingFeature: build.query({
+    // Query for fetching a single pricing by ID
+    getSinglePricing: build.query({
       query: (id) => ({
-        url: `${PRICING_FEATURES_URL}/${id}`,
+        url: `${PRICINGS_URL}/${id}`,
         method: "GET",
       }),
-      providesTags: [tagTypes.pricing_features],
+      providesTags: [tagTypes.pricings],
     }),
 
-    // Mutation for updating a pricing feature by ID
-    updatePricingFeature: build.mutation({
+    // Mutation for updating a pricing by ID
+    updatePricing: build.mutation({
       query: ({ id, data }) => ({
-        url: `${PRICING_FEATURES_URL}/${id}`,
+        url: `${PRICINGS_URL}/${id}`,
         method: "PATCH",
         data,
       }),
-      invalidatesTags: [tagTypes.pricing_features],
+      invalidatesTags: [tagTypes.pricings],
     }),
 
-    // Mutation for deleting a pricing feature by ID
-    deletePricingFeature: build.mutation({
+    // Mutation for deleting a pricing by ID
+    deletePricing: build.mutation({
       query: (id) => ({
-        url: `${PRICING_FEATURES_URL}/${id}`,
+        url: `${PRICINGS_URL}/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [tagTypes.pricing_features],
+      invalidatesTags: [tagTypes.pricings],
     }),
   }),
 });
 
 export const {
-  useCreatePricingFeatureMutation,
-  useGetAllPricingFeaturesQuery,
-  useGetSinglePricingFeatureQuery,
-  useUpdatePricingFeatureMutation,
-  useDeletePricingFeatureMutation,
-} = pricingFeaturesApi;
+  useCreatePricingMutation,
+  useGetAllPricingsQuery,
+  useGetSinglePricingQuery,
+  useUpdatePricingMutation,
+  useDeletePricingMutation,
+} = pricingsApi;
