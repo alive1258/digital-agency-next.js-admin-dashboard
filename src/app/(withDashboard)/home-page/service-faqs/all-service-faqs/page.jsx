@@ -1,4 +1,4 @@
-import AllServiceFaqs from "@/components/UI/HomeSection/Service/ServiceFaqs/AllServiceFaqs";
+import AllServiceFaqs from "@/components/UI/HomeSection/ServiceFaqs/AllServiceFaqs";
 import React from "react";
 
 const page = () => {
