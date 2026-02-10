@@ -13,7 +13,7 @@ const DashboardLayout = ({ children }) => {
   const dispatch = useDispatch();
   // Add your custom styles here and return the layout component.
   const { sidebarMobileStatus, sidebarStatus } = useSelector(
-    (state) => state.adminTree
+    (state) => state.adminTree,
   );
 
   const { user: userData } = useSelector((state) => state?.auth);
@@ -60,7 +60,7 @@ const DashboardLayout = ({ children }) => {
             </div>
 
             {sidebarMobileStatus && (
-              <div className=" lg:hidden  top-16 fixed bg-[#0B0C10]  h-full overflow-y-auto w-full z-[999]  ">
+              <div className=" lg:hidden  top-16 fixed bg-[#0B0C10]  h-full overflow-y-auto w-full z-999  ">
                 <Sidebar
                   role={user?.role}
                   sidebarMobileStatus={sidebarMobileStatus}
@@ -71,7 +71,7 @@ const DashboardLayout = ({ children }) => {
           </div>
           <div className="w-full min-h-screen flex flex-col">
             <Navbar user={user} />
-            <div className="flex-grow min-h-[1000px]">{children}</div>
+            <div className="grow min-h-250">{children}</div>
             <Footer className="bottom-0 " />
           </div>
         </div>

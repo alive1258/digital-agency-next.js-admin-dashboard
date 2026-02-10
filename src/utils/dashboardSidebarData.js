@@ -117,9 +117,9 @@ export const SidebarItemsData = [
         Icon: <IoSettingsSharp size={20} />,
       },
       {
-        id: 7,
-        name: "Collaborate",
-        path: "/home-page/collaborates/all-collaborates",
+        id: 8,
+        name: "our-work-process",
+        path: "/home-page/our-work-process/all-our-work-process",
         module_id: 1,
         Icon: <IoSettingsSharp size={20} />,
       },

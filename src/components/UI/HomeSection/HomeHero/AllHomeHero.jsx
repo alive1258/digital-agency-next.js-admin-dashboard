@@ -83,7 +83,7 @@ const AllHomeHero = () => {
 
   return (
     <div className="md:px-6  p-4 pb-4 rounded-lg">
-      <div className="bg-[#0D0E12] sticky top-[75px] md:top-[82px] z-[450] py-2 md:py-0">
+      <div className="bg-[#0D0E12] sticky top-18.75 md:top-20.5 z-450 py-2 md:py-0">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 ">
           <div className="w-full">
             <SectionTitle
@@ -108,7 +108,7 @@ const AllHomeHero = () => {
             </div>
             {/* Link to create a new company */}
             <Link href="/home-page/home-hero/add-home-hero">
-              <button className="btn w-[150px] md:w-64">Add Home Hero</button>
+              <button className="btn w-37.5 md:w-64">Add Home Hero</button>
             </Link>
           </div>
         </div>
